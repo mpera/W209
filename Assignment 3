@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Page Template</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+
+    </head>
+    <body>
+
+        <script type="text/javascript">
+
+        // Servings of fruits and vegetables eaten daily for a month
+        var dataset = [6, 8, 8, 7, 3, 6, 8, 7, 7, 2, 2, 1, 5, 7, 5, 5, 7, 5, 4, 5, 7, 5, 4, 3, 4, 4, 3, 4, 7, 4] 
+
+        // BARCHART USING SVG RECTANGLES
+        var w = 1000;
+        var h = 375;  
+        var barPadding = 1;  
+
+        // svg element for title and bars
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+        // title
+        svg.append("text")
+            .text("DAILY SERVINGS OF FRUITS AND VEGETABLES")
+            .attr("x", 10)
+            .attr("y", 25)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px")
+            .attr("fill", "rgb(102,102,153)")
+            .attr("font-weight", "600");
+
+        // bars
+        svg.selectAll("rect")
+           .data(dataset)
+           .enter()
+           .append("rect")
+           .attr({
+                x: function(d, i) { return i * (w / dataset.length); },
+                y: function(d) { return h - (d * 40); },
+                width: w / dataset.length - barPadding,
+                height: function(d) { return d * 40; },
+                fill: function(d) { 
+                    if (d == 8 ) { 
+                        return "rgb(0, 104, 55)"; 
+                    } else if ( d == 7) {
+                        return "rgb(26, 152, 80)"; 
+                    } else if ( d == 6) {
+                        return "rgb(102, 189, 99)";
+                    } else if ( d == 5) {
+                        return "rgb(166, 217, 106)";
+                    } else if ( d == 4) {
+                        return "rgb(253, 174, 97)";
+                    } else if ( d == 3) {
+                        return "rgb(244, 109, 67)";
+                    } else if ( d == 2) {
+                        return "rgb(215, 48, 39)";
+                    } else {  
+                        return "rgb(165, 0, 38)";}
+                }
+           });
+
+        // adding serving value labels to bars
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")    
+            .text(function(d) {return d; })
+            .attr("x", function(d, i) {
+                    return i * (w / dataset.length) + (w / (dataset.length) - barPadding) / 2;
+                })
+            .attr("y", function(d) {
+                return h - (d * 40) + 14;
+                })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("fill", "white")
+            .attr("text-anchor", "middle"); 
+
+        // svg element for chart legend
+        var w2 = 1000
+        var h2 = 500
+
+        var svg2 = d3.select("body")
+            .append("svg")
+            .attr("width", w2)
+            .attr("height", h2);
+
+        // x labels
+        svg2.append("text")
+            .text("October")
+            .attr("x", 375)
+            .attr("y", 40)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "15px")
+            .attr("fill", "rgb(102,102,153)")
+            .attr("font-weight", "bold");
+   
+        svg2.append("text")
+            .text("November")
+            .attr("x", 900)
+            .attr("y", 40)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "15px")
+            .attr("fill", "rgb(102,102,153)")
+            .attr("font-weight", "bold");
+
+        // adding labels on the x axis
+        var days = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,1,2,3,4]
+
+        svg2.selectAll("text")
+           .data(days)
+           .enter()
+           .append("text")    
+           .text(function(d) {return d; })
+            .attr("x", function(d, i) {
+                return i * (w2 / days.length) + (w2 / days.length - barPadding) / 2;
+                })
+            .attr("y", 10)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("fill", "rgb(102,102,153)")
+            .attr("text-anchor", "middle"); 
+
+
+        </script>
+
+    </body>
+</html>
