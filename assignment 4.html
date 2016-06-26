@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Fruits and Vegetables Consumed</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+    </head>
+    <body>
+
+	<p><font face="sans-serif" size="2" color="red" ><i>The chart below shows data for July. 
+	<button type="button" style="font-face: 'sans-serif'; font-size: 2; color: teal" ><i>CLICK HERE</i></button>
+	 to see data for August. The data can be sorted by clicking on the bars.</i></font></p>
+
+        <script type="text/javascript">
+
+        // Servings of fruits and vegetables eaten daily for a month
+        var dataset = [6, 8, 8, 7, 3, 6, 8, 7, 7, 2, 2, 1, 5, 7, 5, 5, 7, 5, 4, 5, 7, 5, 4, 3, 4, 4, 3, 4, 7, 4,8] 
+
+        // BARCHART USING SVG RECTANGLES
+        var w = 1000;
+        var h = 375;  
+        var barPadding = 1;  
+
+        // svg element for title
+        var titlesvg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", 50);
+
+        // title
+        titlesvg.append("text")
+            .text("DAILY SERVINGS OF FRUITS AND VEGETABLES")
+            .attr("x", 100)
+            .attr("y", 25)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px")
+            .attr("fill", "rgb(102,102,153)")
+            .attr("font-weight", "600");
+
+        // svg element for bars
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+        // setting up a scale for axes
+        var xScale = d3.scale.ordinal()
+                .domain(d3.range(dataset.length))
+                .rangeRoundBands([0, w], 0.05);
+
+        var yScale = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([0, h]);
+
+        // bars
+        svg.selectAll("rect")
+           .data(dataset)
+           .enter()
+           .append("rect")
+           .attr({
+                x: function(d, i) { return xScale(i); },
+                y: function(d) { return h - yScale(d); },
+                width: xScale.rangeBand(),
+                height: function(d) { return yScale(d); },
+                fill: function(d) { 
+                    if (d == 8 ) { 
+                        return "rgb(0, 104, 55)"; 
+                    } else if ( d == 7) {
+                        return "rgb(26, 152, 80)"; 
+                    } else if ( d == 6) {
+                        return "rgb(102, 189, 99)";
+                    } else if ( d == 5) {
+                        return "rgb(166, 217, 106)";
+                    } else if ( d == 4) {
+                        return "rgb(253, 174, 97)";
+                    } else if ( d == 3) {
+                        return "rgb(244, 109, 67)";
+                    } else if ( d == 2) {
+                        return "rgb(215, 48, 39)";
+                    } else {  
+                        return "rgb(165, 0, 38)";}
+                }  })
+			.on("click", function() {
+			        sortBars();
+			});
+
+
+		// Function to sort bars
+		var sortBars = function() {
+
+		        svg.selectAll("rect")
+		           .sort(function(a, b) {
+		                 return d3.ascending(a, b);
+		           })
+		           .transition()
+		           .duration(1000)
+		           .attr("x", function(d, i) {
+		                 return xScale(i);
+		           });
+
+		        svg.selectAll("text")
+		           .sort(function(a, b) {
+		                 return d3.ascending(a, b);
+		           })
+		           .transition()
+		           .duration(1000)
+		            .attr("x", function(d, i) {
+		                    return xScale(i) + xScale.rangeBand() / 2;
+		           		});
+		};
+
+        // adding serving value labels to bars
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")    
+            .text(function(d) {return d; })
+            .attr("x", function(d, i) {
+                    return xScale(i) + xScale.rangeBand() / 2;
+                })
+            .attr("y", function(d) {
+                return h - yScale(d) + 14;
+                })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("fill", "white")
+            .attr("text-anchor", "middle")
+            .style("pointer-events", "none"); 
+
+		//On click, update with new data
+		d3.select("button")
+		    .on("click", function() {
+
+		        //New values for dataset
+		        dataset = [3,6,8,7,5,7,6,8,3,4,3,7,6,6,5,7,6,8,8,5,6,5,7,8,6,7,5,6,4,5,7];
+
+		        //Update all rects
+		        svg.selectAll("rect")
+		           .data(dataset)
+		           .transition()          
+		           .duration(2000)
+		           .attr("y", function(d) {
+		                return h - yScale(d);
+		           })
+		           .attr("height", function(d) {
+		                return yScale(d);})
+		           .attr("fill", function(d) { 
+                    if (d == 8 ) { 
+                        return "rgb(0, 104, 55)"; 
+                    } else if ( d == 7) {
+                        return "rgb(26, 152, 80)"; 
+                    } else if ( d == 6) {
+                        return "rgb(102, 189, 99)";
+                    } else if ( d == 5) {
+                        return "rgb(166, 217, 106)";
+                    } else if ( d == 4) {
+                        return "rgb(253, 174, 97)";
+                    } else if ( d == 3) {
+                        return "rgb(244, 109, 67)";
+                    } else if ( d == 2) {
+                        return "rgb(215, 48, 39)";
+                    } else {  
+                        return "rgb(165, 0, 38)";}
+                	});
+		        	
+
+		           // Update bar labels
+					svg.selectAll("text")
+					   .data(dataset)
+					   .transition()
+					   .duration(2000)
+					   .text(function(d) {
+					        return d;
+					   })
+					   .attr("x", function(d, i) {
+					        return xScale(i) + xScale.rangeBand() / 2;
+					   })
+					   .attr("y", function(d) {
+					        return h - yScale(d) + 14;
+					   });
+
+
+				});
+
+
+        </script>
+
+    </body>
+</html>
