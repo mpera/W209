@@ -30,7 +30,7 @@
             <h6>MtCO2e</h6>
             <script>
                var map = d3.geomap.choropleth()
-                  .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                  .geofile('/js/d3-geomap/USA.json')
                   .projection(d3.geo.albersUsa)
                   .colors(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"])
                   .column('2011')
@@ -60,7 +60,7 @@
             <h6>Metric tons of CO2e per capita</h6>
             <script>
                var map = d3.geomap.choropleth()
-                  .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                  .geofile('/js/d3-geomap/USA.json')
                   .projection(d3.geo.albersUsa)
                   .colors(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"])
                   .column('percap')
@@ -90,7 +90,7 @@
             <h6>Net carbon emissions and sequestration (MtCO2e)</h6>
             <script>
                 var map = d3.geomap.choropleth()
-                    .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                    .geofile('/js/d3-geomap/USA.json')
                     .projection(d3.geo.albersUsa)
                     .colors(["#00441b","#006d2c","#238b45","#41ab5d","#74c476","#a1d99b","#c7e9c0","#e5f5e0","#fee0d2"])
                     .column('LUCF 2011')
