@@ -1,0 +1,120 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Maps maps I like maps</title>
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/stepper.css">
+  <link href="/js/d3-geomap/css/d3.geomap.css" rel="stylesheet">
+
+  <script src="/js/map.js"></script>
+  <script src="/js/d3.v2.min.js"></script>
+  <script src="/js/d3.min.js"></script>
+  <script src="/js/d3-geomap/vendor/d3.geomap.dependencies.min.js"></script>
+  <script src="/js/d3-geomap/js/d3.geomap.min.js"></script>
+</head>
+<body>
+  <div id="container">
+    <h1>How Does Your State Stack Up?</h1>
+    <h2 class="subtitle">Compare states based on total emissions, emissions per capita, and net emissions from land use and forestry change.</h2>
+    <div id="vis-nav">
+      <a href="#" id="step1" class="step-link active">Total Emissions</a>
+      <a href="#" id="step2" class="step-link">Emissions per Capita</a>
+      <a href="#" id="step3" class="step-link">LUCF</a>
+    </div>
+    <div id="vis-container">
+      <div id="annotation-steps">
+        <div class="annotation-step" id="step1-annotation" style="display:block;">
+          <div class="annotation" id="step1-map" >
+            <h4>Total Emissions, 2011</h4>
+            <h6>MtCO2e</h6>
+            <script>
+               var map = d3.geomap.choropleth()
+                  .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                  .projection(d3.geo.albersUsa)
+                  .colors(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"])
+                  .column('2011')
+                  .unitId('fips')
+                  .scale(1000)
+                  .legend(true);
+
+
+              d3.csv('states.csv', function(error, data) {
+                  if (error) {
+                      console.log(error);
+                  } else {
+                      console.log(data);
+
+
+                  d3.select('#step1-map')
+                      .datum(data)
+                      .call(map.draw, map);
+                  }
+              });
+            </script>
+          </div>
+        </div>
+        <div class="annotation-step" id="step2-annotation">
+          <div class="annotation" id="step2-map" >
+            <h4>Emissions per Capita, 2011</h4>
+            <h6>Metric tons of CO2e per capita</h6>
+            <script>
+               var map = d3.geomap.choropleth()
+                  .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                  .projection(d3.geo.albersUsa)
+                  .colors(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"])
+                  .column('percap')
+                  .unitId('fips')
+                  .scale(1000)
+                  .legend(true);
+
+
+              d3.csv('states.csv', function(error, data) {
+                  if (error) {
+                      console.log(error);
+                  } else {
+                      console.log(data);
+
+
+                  d3.select('#step2-map')
+                      .datum(data)
+                      .call(map.draw, map);
+                  }
+              });
+            </script>
+          </div>
+        </div>
+        <div class="annotation-step" id="step3-annotation">
+          <div class="annotation" id="step3-map" >
+            <h4>Land Use and Forestry Change</h4>
+            <h6>Net carbon emissions and sequestration (MtCO2e)</h6>
+            <script>
+                var map = d3.geomap.choropleth()
+                    .geofile('/js/d3-geomap/topojson/countries/USA.json')
+                    .projection(d3.geo.albersUsa)
+                    .colors(["#00441b","#006d2c","#238b45","#41ab5d","#74c476","#a1d99b","#c7e9c0","#e5f5e0","#fee0d2"])
+                    .column('LUCF 2011')
+                    .unitId('fips')
+                    .scale(1000)
+                    .legend(true);
+
+                d3.csv('states.csv', function(error, data) {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log(data);
+
+                    d3.select('#step3-map')
+                        .datum(data)
+                        .call(map.draw, map);
+                    }
+                });
+            </script>
+          </div>
+        </div>
+      </div>
+      <div id="vis-canvas"></div>
+    </div>
+  </div>
+  <script src="js/stepper.js"></script>
+</body>
